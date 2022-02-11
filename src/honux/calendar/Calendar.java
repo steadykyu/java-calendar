@@ -12,6 +12,37 @@ public class Calendar {
         else
             return false;
     }
+    //그레고리력 기준으로 첫일(인덱스) 찾기
+    // 특정 년도의 1월 1일의 요일에서 그 다음 년도의 1월 1일의 요일은 평년일 때 1일, 윤년일 때 2일 오른쪽으로 이동한다.
+    // 첫 표준 그레고리력의 1583년 1월 1일은 토요일이다.
+   public int findJanFirstday(int year){
+       int sum = 0;
+       int firstday;
+       int standardDay = 6;                 // 첫날 토요일이라 6(인덱스)로 시작.
+        for(int i = 1583; i < year; i++){
+            if(isLeapYear(i)){
+                sum += 2;
+            }else {
+                sum += 1;
+            }
+        }
+        firstday = (standardDay+sum) % 7;
+       System.out.println(firstday);
+        return firstday;
+    }
+    //특정 월의 1일의 요일에서 그 다음 월의 1일의 요일은 해당 월의 총 일수를 7로 나눈 나머지만큼 오른쪽으로 이동한다.
+    //이동한만큼의 일수 찾기.
+    public int plusfirstDay(int year, int month){
+       int sum = 0;
+       int plusday;
+       for(int i = 1; i < month; i++){
+           sum += getMaxDaysOfMonth(year,i);
+       }
+       plusday = sum % 7;
+        System.out.println(plusday);
+       return plusday;
+    }
+
 
     public int getMaxDaysOfMonth(int year, int month) {
         if (isLeapYear(year)){
@@ -22,22 +53,33 @@ public class Calendar {
 
     }
 
-    public void printSampleCalendar(int year, int month, String day) {
+    public void printSampleCalendar(int year, int month) {
         System.out.printf("    <<%4d년%3d월>>\n",year,month);
         System.out.println("  SU MO TU WE TH FR SA");
         System.out.println("--------------------");
+        int monthFirstDay = (findJanFirstday(year) + plusfirstDay(year,month)) % 7;
+        //pring blank space
+        for(int i = 0; i < monthFirstDay ; i++){
+            System.out.print("   ");
+        }
 
-        int maxDay = getMaxDaysOfMonth(year, month);
-        for(int i = 1; i <= maxDay ; i++){
+        //print first line
+        int count = 7 - monthFirstDay;
+        for(int i = 1; i <= count; i++){
             System.out.printf("%3d",i);
-            if(i % 7 == 0)
+        }
+        System.out.println("");
+        //print second line to last
+        int maxDay = getMaxDaysOfMonth(year, month);
+        int linecount = 0;
+        for(int i = count + 1; i <= maxDay ; i++){
+            System.out.printf("%3d",i);
+            linecount++;
+            if(linecount % 7 == 0)
                 System.out.println();
         }
         System.out.println("");
-//        System.out.println("1   2   3   4   5   6   7");
-//        System.out.println("8   9  10  11  12  13  14");
-//        System.out.println("15 16  17  18  19  20  21");
-//        System.out.println("22 23  24  25  26  27  28");
+        System.out.println("");
     }
 }
 
