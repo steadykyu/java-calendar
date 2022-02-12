@@ -1,9 +1,30 @@
 package honux.calendar;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
 public class Calendar {
 
     private static final int[] MAX_DAYS = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] LEAP_MAX_DAYS = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private HashMap<Date,String> planMap;
+
+    public Calendar(){
+        planMap = new HashMap<>();
+    }
+
+    public void registerPlan(String strDate, String plan) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+        planMap.put(date,plan);
+    }
+
+    public String searchPlan(String strDate) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+        String plan = planMap.get(date);
+        return plan;
+    }
 
     public boolean isLeapYear(int year){
         if(year % 4 ==0 && (year % 100 !=0 || year % 400 == 0) ){
@@ -27,7 +48,7 @@ public class Calendar {
             }
         }
         firstday = (standardDay+sum) % 7;
-       System.out.println(firstday);
+
         return firstday;
     }
     //특정 월의 1일의 요일에서 그 다음 월의 1일의 요일은 해당 월의 총 일수를 7로 나눈 나머지만큼 오른쪽으로 이동한다.
@@ -39,7 +60,7 @@ public class Calendar {
            sum += getMaxDaysOfMonth(year,i);
        }
        plusday = sum % 7;
-        System.out.println(plusday);
+
        return plusday;
     }
 
@@ -81,7 +102,16 @@ public class Calendar {
         System.out.println("");
         System.out.println("");
     }
+
+    public static void main(String[] args) throws ParseException {
+        Calendar cal= new Calendar();
+
+        cal.registerPlan("2017-06-23", "Let's eat beef");
+        System.out.println(cal.searchPlan("2017-06-23"));
+    }
 }
+
+
 
 
 
