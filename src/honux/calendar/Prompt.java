@@ -3,6 +3,21 @@ package honux.calendar;
 import java.util.Scanner;
 
 public class Prompt {
+    public void printMenu (){
+        System.out.println(
+                "+----------------------+\n" +
+                "| 1. 일정 등록           \n" +
+                "| 2. 일정 검색           \n" +
+                "| 3. 달력 보기\n" +
+                "| h. 도움말 q. 종료\n" +
+                "+----------------------+");
+        System.out.println("명령 (1, 2, 3, h, q)");
+        Scanner scanner = new Scanner(System.in);
+        String command = scanner.next();
+        System.out.println("일정을 입력하세요";
+
+    }
+
     public int parseDay(String week){
       switch(week) {
           case "su":
